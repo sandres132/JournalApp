@@ -1,7 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
+
 import { ImageList, ImageListItem } from '@mui/material';
 
 export const ImageGalery = () => {
+
+  const { active } = useSelector( state => state.journal )
+
   return (
     <ImageList sx={{ width: '100%', height: 500 }} cols={3} rowHeight={164}>
       {itemData.map((item) => (
