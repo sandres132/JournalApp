@@ -1,20 +1,20 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { SaveOutlined, UploadOutlined } from '@mui/icons-material'
+import { DeleteOutline, SaveOutlined, UploadOutlined } from '@mui/icons-material'
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.css'
 
 import { ImageGalery } from '../components'
 import { useForm } from '../../hooks'
-import { setActiveNote, startSavingNote, startUploadingFiles } from '../../store/journal'
+import { setActiveNote, startDeletingNote, startSavingNote, startUploadingFiles } from '../../store/journal'
 
 export const NoteView = () => {
 
     const dispatch = useDispatch();
     const { active:note, messageSaved, isSaving } = useSelector( state => state.journal );
-    const { body, title, imageUrls, date, onInputChange, formState } = useForm( note );
+    const { body, title, date, onInputChange, formState } = useForm( note );
 
     const dateString = useMemo(() => {
         const newDate = new Date( date );
@@ -45,6 +45,10 @@ export const NoteView = () => {
         
         dispatch( startUploadingFiles( target.files ) );
     }
+
+    const onDelete = () => {
+        dispatch( startDeletingNote() )
+    }
     
     return (
         <Grid
@@ -55,7 +59,7 @@ export const NoteView = () => {
             className='animate__animated animate__fadeIn animate__faster'
         >
             <Grid item>
-                <Typography fontSize={39} fontWeight='light' >{dateString}</Typography>
+                <Typography fontSize={30} fontWeight='light' >{dateString}</Typography>
             </Grid>
             <Grid item>
 
@@ -83,6 +87,15 @@ export const NoteView = () => {
                 >
                     <SaveOutlined sx={{fontSize: 30, mr:1}} />
                     Guardar
+                </Button>
+
+                <Button
+                    onClick={ onDelete }
+                    sx={{padding:2}}
+                    color='error'
+                >
+                    <DeleteOutline/>
+                    Erase
                 </Button>
             </Grid>
 
@@ -112,7 +125,9 @@ export const NoteView = () => {
                 />
             </Grid>
 
-            <ImageGalery/>
+            <ImageGalery 
+                images={ note.imageUrls }
+            />
 
         </Grid>
     )
