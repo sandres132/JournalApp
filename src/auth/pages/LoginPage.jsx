@@ -5,7 +5,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { Google } from '@mui/icons-material'
 
-import { startGoolgleSignIn, startLoginWithEmailPassword } from '../../store/auth'
+import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth'
 import { AuthLayout } from '../layout/AuthLayout'
 
 import { useForm } from '../../hooks/useForm'
@@ -30,7 +30,7 @@ export const LoginPage = () => {
   }
 
   const onGoogleSignIn = () => {
-    dispatch(startGoolgleSignIn())
+    dispatch(startGoogleSignIn())
   }
 
   return (
@@ -38,6 +38,7 @@ export const LoginPage = () => {
       <form
         onSubmit={onSubmit} 
         className='animate__animated animate__fadeIn animate__faster'
+        aria-label='submit-form'
       >
         <Grid container>
           <Grid item xs={12} sx={{mt:2}}>
@@ -58,9 +59,12 @@ export const LoginPage = () => {
               type='password'
               placeholder='password'
               fullWidth
-              name='password'
-              value={password}
-              onChange={onInputChange}
+              name="password"
+              inputProps={{
+                'data-testid': 'password'
+              }}
+              value={ password }
+              onChange={ onInputChange }
             />
           </Grid>
 
@@ -79,7 +83,13 @@ export const LoginPage = () => {
               </Button>
             </Grid>
             <Grid item xs={12} sm ={6}>
-              <Button disabled={isAuthenticating} onClick={onGoogleSignIn} variant='contained' fullWidth>
+              <Button 
+                aria-label='google-btn' 
+                disabled={isAuthenticating} 
+                onClick={onGoogleSignIn} 
+                variant='contained' 
+                fullWidth
+              >
                 <Google/>
                 <Typography sx={{ml:1}}>Google</Typography>
               </Button>
