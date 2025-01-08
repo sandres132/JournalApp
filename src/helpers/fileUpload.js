@@ -1,7 +1,8 @@
 
 
 export const fileUpload = async(file) => {
-    if(!file) throw new Error("The file doesn't exist")
+    // if(!file) throw new Error("The file doesn't exist")
+    if(!file) return null;
 
     const cloudUrl = 'https://api.cloudinary.com/v1_1/curso-react-aisz/upload';
 
@@ -20,7 +21,8 @@ export const fileUpload = async(file) => {
         
         return cloudResp.secure_url;
     } catch (error) {
-        throw new Error(error.message);
+        // throw new Error(error.message);
+        return  null;
     }
 
 }
